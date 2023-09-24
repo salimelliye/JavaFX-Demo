@@ -71,18 +71,18 @@ public class Main extends Application {
         filesColumn.setCellFactory(column -> new TableCell<>() {
             private final Button uploadButton = new Button("Upload Files");
             private final Label filesLabel = new Label();
+            private final FileChooser fileChooser = new FileChooser();
 
             {
-                HBox hbox = new HBox(uploadButton, filesLabel);
+                HBox hbox = new HBox(uploadButton);
                 hbox.setSpacing(5);
                 setGraphic(hbox);
 
                 uploadButton.setOnAction(event -> {
                     Course course = getTableView().getItems().get(getIndex());
-                    List<File> selectedFiles = showFileChooser();
-                    if (selectedFiles != null) {
-                        course.getFiles().addAll(selectedFiles);
-                        updateFilesLabel(course.getFiles());
+                    File selectedFile = fileChooser.showOpenDialog(primaryStage);
+                    if (selectedFile != null) {
+                        course.getFiles().addAll(selectedFile);
                     }
                 });
             }
@@ -95,21 +95,9 @@ public class Main extends Application {
                 } else {
                     setGraphic(uploadButton);
                     Course course = getTableView().getItems().get(getIndex());
-                    updateFilesLabel(course.getFiles());
                 }
             }
 
-            private void updateFilesLabel(List<File> files) {
-                if (files == null || files.isEmpty()) {
-                    filesLabel.setText("");
-                } else {
-                    StringBuilder filesText = new StringBuilder("Uploaded Files:\n");
-                    for (File file : files) {
-                        filesText.append(file.getName()).append("\n");
-                    }
-                    filesLabel.setText(filesText.toString());
-                }
-            }
         });
 
         // Add columns to the TableView
