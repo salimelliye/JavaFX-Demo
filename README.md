@@ -166,6 +166,26 @@ import java.io.File;
 
 ### Initialize FileChooser
 ```java
+// Initialize FileChooser
+FileChooser fileChooser = new FileChooser();
+// Label for the button
+Button uploadButton = new Button("Upload Files");
+    {
+    HBox hbox = new HBox(uploadButton);
+    hbox.setSpacing(5);
+    setGraphic(hbox);
+
+    uploadButton.setOnAction(event -> {
+        // Assuming you already defined a Class Course in src folder
+        Course course = new Course();
+        // Open the "Select Files" window on the primary stage
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        // Example
+        if (selectedFile != null) {
+            course.getFiles().addAll(selectedFile);
+        }
+    });
+    }
 ```
 
 * ## Progress Bar
