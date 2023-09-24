@@ -1,7 +1,6 @@
 package com.example.javafxdemo;
 
 import javafx.application.Application;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -9,19 +8,22 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.web.HTMLEditor;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 
 import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
+    private TableView<Course> tableView;
     private ListView<Person> listView;
-    private TableView<Course> tableView = new TableView<>();
-    private Button listViewButton ;
-    private Button tableViewButton;
+    private Pagination pagination;
+    private ObservableList<Person> people;
+    private ObservableList<Course> courses;
 
+    public Main() {
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -29,14 +31,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         // Create a ProgressBar
         ProgressBar progressBar = new ProgressBar(.2);
         progressBar.setPrefWidth(600);
 
-        // Create List View
-        primaryStage.setTitle("Person Responsibilities");
-
+        // LISTVIEW
         // Create Person objects
         Set<String> nourResponsibilities = new HashSet<>(Arrays.asList("List View", "Tree View", "Date Picker"));
         Set<String> kevinResponsibilities = new HashSet<>(Arrays.asList("Table View", "Color Picker", "File Upload"));
@@ -52,13 +51,15 @@ public class Main extends Application {
         listView.setItems(people);
 
 
-        // Create columns
+        // TABLEVIEW
+        tableView = new TableView<>();
+        // Create columns for the TableView
         TableColumn<Course, Color> colorColumn = new TableColumn<>("Course Color");
         TableColumn<Course, String> numberColumn = new TableColumn<>("Course Number");
         TableColumn<Course, String> nameColumn = new TableColumn<>("Course Name");
         TableColumn<Course, Void> filesColumn = new TableColumn<>("Course Files");
 
-        // Set cell value factories: Data Binding, Automatic Data Population and / or Type Conversion
+        // Set cell value factories for TableView
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -114,13 +115,12 @@ public class Main extends Application {
                     setGraphic(uploadButton);
                 }
             }
-
         });
 
         // Add columns to the TableView
         tableView.getColumns().addAll(colorColumn, numberColumn, nameColumn, filesColumn);
 
-        // Add dummy data
+        // Add dummy data for TableView
         ObservableList<Course> courses = FXCollections.observableArrayList(
                 new Course(Color.RED, "101", "Introduction to Java", new ArrayList<>()),
                 new Course(Color.BLUE, "201", "Advanced Java Programming", new ArrayList<>())
@@ -128,40 +128,38 @@ public class Main extends Application {
         );
         tableView.setItems(courses);
 
-        listViewButton = new Button("Switch");
-        listViewButton.setOnAction(event -> toggleView());
+        // PAGINATION
+        // Create Pagination with 3 pages (updated)
+        pagination = new Pagination(3);
+        pagination.setPageFactory(this::createPage);
 
-        // Create a VBox to hold the elements
-        VBox vbox = new VBox(progressBar, listViewButton,listView, tableView);
-        vbox.setSpacing(10);
 
-        // Create a BorderPane as the root of the Scene
         BorderPane root = new BorderPane();
-        root.setTop(vbox);
+        root.setTop(progressBar);
+        root.setCenter(pagination);
 
-        // Create a Scene with the BorderPane
         Scene scene = new Scene(root, 600, 400);
-
         primaryStage.setScene(scene);
-        primaryStage.setTitle("JavaFX TableView Example");
+        primaryStage.setTitle("JavaFX Presentation");
         primaryStage.show();
-
     }
 
-    // Method to show a file chooser dialog
-    private List<File> showFileChooser() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Files");
-        return fileChooser.showOpenMultipleDialog(null);
-    }
+    private VBox createPage(int pageIndex) {
+        VBox pageContent = new VBox();
+        pageContent.setSpacing(10);
 
-    private void toggleView() {
-        if (listView.isVisible()) {
-            listView.setVisible(false);
-            tableView.setVisible(true);
-        } else {
-            listView.setVisible(true);
-            tableView.setVisible(false);
+        if (pageIndex == 0) {
+            // Page 1: ListView
+            pageContent.getChildren().addAll(listView);
+        } else if (pageIndex == 1) {
+            // Page 2: TableView
+            pageContent.getChildren().addAll(tableView);
+        } else if (pageIndex == 2) {
+            // Page 3: HTMLEditor for HTML Manipulation
+            HTMLEditor htmlEditor = new HTMLEditor();
+            pageContent.getChildren().addAll(htmlEditor);
         }
+
+        return pageContent;
     }
 }
