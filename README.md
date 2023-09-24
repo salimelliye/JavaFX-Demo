@@ -232,4 +232,5 @@ public class MainApp extends Application {
 ```
 --- 
 
-> Look at you, you've come this far! Here, have a cookie 🍪
+> Look at you, you've come this far! </br>
+> Here, have a cookie 🍪
