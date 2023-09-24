@@ -70,7 +70,6 @@ public class Main extends Application {
         // Create an "Upload Files" button cell factory for the Course Files column
         filesColumn.setCellFactory(column -> new TableCell<>() {
             private final Button uploadButton = new Button("Upload Files");
-            private final Label filesLabel = new Label();
             private final FileChooser fileChooser = new FileChooser();
 
             {
@@ -94,7 +93,6 @@ public class Main extends Application {
                     setGraphic(null);
                 } else {
                     setGraphic(uploadButton);
-                    Course course = getTableView().getItems().get(getIndex());
                 }
             }
 
