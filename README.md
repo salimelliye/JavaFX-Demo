@@ -192,6 +192,9 @@ Button uploadButton = new Button("Upload Files");
 ### Import Statements for ProgressBar
 ```java
 import javafx.scene.control.ProgressBar;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 ```
 
 ### Initialize ProgressBar
@@ -207,6 +210,28 @@ progressBar.getStyleClass().add("custom-progress-bar");
 .custom-progress-bar .bar {
 -fx-background-color: #00FF00; /* Green color */
 }
+```
+
+To create a sample Timeline to simulate progress: 
+```java
+Duration duration = Duration.seconds(5); // Total duration of the progress simulation
+int numKeyFrames = 100; // Number of keyframes (steps) to complete the progress
+double increment = 1.0 / numKeyFrames; // Increment to update the progress
+// Create a sequence of `KeyFrame` objects that represent the progress at each step of the simulation. 
+// The progress value should be incremented gradually.
+KeyFrame[] keyFrames = new KeyFrame[numKeyFrames];
+for (int i = 0; i < numKeyFrames; i++) {
+    Duration frameTime = duration.multiply((double) i / numKeyFrames);
+    keyFrames[i] = new KeyFrame(frameTime, event -> {
+        double newProgress = progressBar.getProgress() + increment;
+        progressBar.setProgress(newProgress);
+});
+}
+// Create a Timeline and add the keyframes to it. 
+// Then, play the timeline to simulate the progress
+Timeline timeline = new Timeline(keyFrames);
+timeline.setCycleCount(1); // Run the timeline once
+timeline.play();
 ```
 
 # Displaying Components
