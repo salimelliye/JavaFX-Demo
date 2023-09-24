@@ -39,7 +39,7 @@ public class Main extends Application {
         TableColumn<Course, String> nameColumn = new TableColumn<>("Course Name");
         TableColumn<Course, Void> filesColumn = new TableColumn<>("Course Files");
 
-        // Set cell value factories
+        // Set cell value factories: Data Binding, Automatic Data Population and / or Type Conversion
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -124,13 +124,6 @@ public class Main extends Application {
         primaryStage.setTitle("JavaFX TableView Example");
         primaryStage.show();
 
-    }
-
-    // Method to show a file chooser dialog
-    private List<File> showFileChooser() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Files");
-        return fileChooser.showOpenMultipleDialog(null);
     }
 
     // Course class to represent data
