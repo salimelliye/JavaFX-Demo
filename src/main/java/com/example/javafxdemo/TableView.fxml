@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxdemo.SceneController">
+    <VBox alignment="CENTER" layoutX="19.0" layoutY="14.0" prefHeight="342.0" prefWidth="562.0">
+        <ProgressBar fx:id="myProgressBar" prefHeight="35.0" prefWidth="562.0" progress="0.5" />
+      <TextField editable="false" text="Table View" />
+        <TableView prefHeight="270.0" prefWidth="562.0">
+            <columns>
+                <TableColumn prefWidth="138.4000244140625" text="Course Color" />
+                <TableColumn prefWidth="133.5999755859375" text="Course ID" />
+                <TableColumn prefWidth="148.0" text="Course Name" />
+                <TableColumn minWidth="0.0" prefWidth="144.79998779296875" text="Course Files" />
+            </columns>
+        </TableView>
+    </VBox>
+    <Button fx:id="myButton" layoutX="515.0" layoutY="351.0" mnemonicParsing="false" onAction="#switchToTree" text="Next Slide" textAlignment="CENTER" />
+</AnchorPane>
