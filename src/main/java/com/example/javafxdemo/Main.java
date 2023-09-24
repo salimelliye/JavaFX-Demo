@@ -58,7 +58,7 @@ public class Main extends Application {
         TableColumn<Course, String> nameColumn = new TableColumn<>("Course Name");
         TableColumn<Course, Void> filesColumn = new TableColumn<>("Course Files");
 
-        // Set cell value factories
+        // Set cell value factories: Data Binding, Automatic Data Population and / or Type Conversion
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -164,6 +164,4 @@ public class Main extends Application {
             tableView.setVisible(false);
         }
     }
-
-
 }
