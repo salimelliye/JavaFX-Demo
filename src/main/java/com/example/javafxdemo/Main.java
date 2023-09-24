@@ -3,6 +3,7 @@ package com.example.javafxdemo;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,9 +17,15 @@ import java.io.File;
 import java.util.*;
 
 public class Main extends Application {
+    private ProgressBar progressBar;
     private TableView<Course> tableView;
     private ListView<Person> listView;
+    private TreeView<String> treeView;
+    HBox datePickerBox;
+    private Label datePickerLabel;
+    private DatePicker datePicker;
     private Pagination pagination;
+
     private ObservableList<Person> people;
     private ObservableList<Course> courses;
 
@@ -32,7 +39,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Create a ProgressBar
-        ProgressBar progressBar = new ProgressBar(.2);
+        progressBar = new ProgressBar(.2);
         progressBar.setPrefWidth(600);
 
         // LISTVIEW
@@ -128,9 +135,78 @@ public class Main extends Application {
         );
         tableView.setItems(courses);
 
+
+        // Create the root item for the TreeView
+        TreeItem<String> rootItem = new TreeItem<>("Courses");
+
+        // Create child items for the courses
+        TreeItem<String> communicationSystems = new TreeItem<>("Communication Systems");
+        TreeItem<String> computerArchitecture = new TreeItem<>("Computer Architecture");
+        TreeItem<String> databaseSystems = new TreeItem<>("Database Systems");
+        TreeItem<String> introToVirtualReality = new TreeItem<>("Introduction to Virtual Reality");
+        TreeItem<String> operatingSystems = new TreeItem<>("Operating Systems");
+        TreeItem<String> professionalCommunication = new TreeItem<>("Professional Communication");
+
+        // Add child items to the root item
+        rootItem.getChildren().addAll(
+                communicationSystems,
+                computerArchitecture,
+                databaseSystems,
+                introToVirtualReality,
+                operatingSystems,
+                professionalCommunication
+        );
+
+        // Add sub-items to each course
+        communicationSystems.getChildren().addAll(
+                new TreeItem<>("Lecture 1"),
+                new TreeItem<>("Lecture 2"),
+                new TreeItem<>("Assignment 1")
+        );
+
+        computerArchitecture.getChildren().addAll(
+                new TreeItem<>("Lecture 1"),
+                new TreeItem<>("Assignment 1"),
+                new TreeItem<>("Assignment 2")
+        );
+
+        databaseSystems.getChildren().addAll(
+                new TreeItem<>("Lecture 1"),
+                new TreeItem<>("Lecture 2"),
+                new TreeItem<>("Lecture 3"),
+                new TreeItem<>("Assignment 1")
+        );
+
+        introToVirtualReality.getChildren().addAll(
+                new TreeItem<>("Lecture 1"),
+                new TreeItem<>("Assignment 1")
+        );
+
+        operatingSystems.getChildren().addAll(
+                new TreeItem<>("Lecture 1"),
+                new TreeItem<>("Lecture 2"),
+                new TreeItem<>("Assignment 1"),
+                new TreeItem<>("Assignment 2")
+        );
+
+        professionalCommunication.getChildren().addAll(
+                new TreeItem<>("Lecture 1"),
+                new TreeItem<>("Lecture 2"),
+                new TreeItem<>("Assignment 1")
+        );
+
+        // Create the TreeView
+        treeView = new TreeView<>(rootItem);
+
+        // Create a DatePicker with a title
+        datePickerLabel = new Label("Note: You have a Database Presentation while you are in Poland. \n Choose an alternative date to suggest for rescheduling it:");
+        datePicker = new DatePicker();
+        datePickerBox = new HBox(datePickerLabel, datePicker);
+        datePickerBox.setMargin(datePicker, new Insets(5, 0, 0, 10));
+
         // PAGINATION
         // Create Pagination with 3 pages (updated)
-        pagination = new Pagination(3);
+        pagination = new Pagination(4);
         pagination.setPageFactory(this::createPage);
 
 
@@ -148,14 +224,21 @@ public class Main extends Application {
         VBox pageContent = new VBox();
         pageContent.setSpacing(10);
 
+        double progress = (double) (pageIndex + 1) / 4;
+        progressBar.setProgress(progress);
+
         if (pageIndex == 0) {
             // Page 1: ListView
             pageContent.getChildren().addAll(listView);
+
         } else if (pageIndex == 1) {
             // Page 2: TableView
             pageContent.getChildren().addAll(tableView);
         } else if (pageIndex == 2) {
-            // Page 3: HTMLEditor for HTML Manipulation
+            // Page 3: TreeView
+            pageContent.getChildren().addAll(treeView, datePickerBox);
+        } else if (pageIndex == 3){
+            // Page 4: HTMLEditor for HTML Manipulation
             HTMLEditor htmlEditor = new HTMLEditor();
             pageContent.getChildren().addAll(htmlEditor);
         }
