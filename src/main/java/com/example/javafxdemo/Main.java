@@ -21,7 +21,7 @@ public class Main extends Application {
     private TableView<Course> tableView;
     private ListView<Person> listView;
     private TreeView<String> treeView;
-    HBox datePickerBox;
+    private HBox datePickerBox;
     private Label datePickerLabel;
     private DatePicker datePicker;
     private Pagination pagination;
