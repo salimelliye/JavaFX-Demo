@@ -255,6 +255,42 @@ public class MainApp extends Application {
     }
 }
 ```
+
+* ## Pagination
+### Import Statements for Pagination
+
+```java
+import javafx.scene.control.Pagination;
+```
+### Create a JavaFX Application
+```java
+public class MainApp extends Application {
+    // Create a Pagination object
+        pagination = new Pagination(3); //Use cutomiized constructor to set the number of pages - 3 in this case
+        pagination.setPageFactory(this::createPage); // Use serPageFactory() method to set the content of the pages
+
+    
+private VBox createPage(int pageIndex) {
+        VBox pageContent = new VBox(); // Return page content in Vertical alligned box
+        pageContent.setSpacing(10); 
+
+    // Set the retuned pages for each of the three pagination buttons
+        if (pageIndex == 0) {
+            // Page 1: ListView
+            pageContent.getChildren().addAll(listView);
+        } else if (pageIndex == 1) {
+            // Page 2: TableView
+            pageContent.getChildren().addAll(tableView);
+        } else if (pageIndex == 2) {
+            // Page 3: HTMLEditor for HTML Manipulation
+            HTMLEditor htmlEditor = new HTMLEditor();
+            pageContent.getChildren().addAll(htmlEditor);
+        }
+
+        return pageContent;
+    }
+}
+
 --- 
 
 > Look at you, you've come this far! </br>
