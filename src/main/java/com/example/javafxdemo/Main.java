@@ -1,8 +1,7 @@
 package com.example.javafxdemo;
 
 import javafx.application.Application;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -13,11 +12,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main extends Application {
+    private ListView<Person> listView;
+    private TableView<Course> tableView = new TableView<>();
+    private Button listViewButton ;
+    private Button tableViewButton;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -30,8 +34,23 @@ public class Main extends Application {
         ProgressBar progressBar = new ProgressBar(.2);
         progressBar.setPrefWidth(600);
 
-        // Create TableView
-        TableView<Course> tableView = new TableView<>();
+        // Create List View
+        primaryStage.setTitle("Person Responsibilities");
+
+        // Create Person objects
+        Set<String> nourResponsibilities = new HashSet<>(Arrays.asList("List View", "Tree View", "Date Picker"));
+        Set<String> kevinResponsibilities = new HashSet<>(Arrays.asList("Table View", "Color Picker", "File Upload"));
+        Set<String> salimResponsibilities = new HashSet<>(Arrays.asList("Pagination", "HTML Manipulation", "Progress Bar"));
+
+        Person nour = new Person("Nour", nourResponsibilities);
+        Person kevin = new Person("Kevin", kevinResponsibilities);
+        Person salim = new Person("Salim", salimResponsibilities);
+
+        // Populate a ListView and add Person objects to it
+        listView = new ListView<>();
+        ObservableList<Person> people = FXCollections.observableArrayList(nour, kevin, salim);
+        listView.setItems(people);
+
 
         // Create columns
         TableColumn<Course, Color> colorColumn = new TableColumn<>("Course Color");
@@ -109,8 +128,11 @@ public class Main extends Application {
         );
         tableView.setItems(courses);
 
-        // Create a VBox to hold the ProgressBar and TableView
-        VBox vbox = new VBox(progressBar, tableView);
+        listViewButton = new Button("Switch");
+        listViewButton.setOnAction(event -> toggleView());
+
+        // Create a VBox to hold the elements
+        VBox vbox = new VBox(progressBar, listViewButton,listView, tableView);
         vbox.setSpacing(10);
 
         // Create a BorderPane as the root of the Scene
@@ -133,42 +155,15 @@ public class Main extends Application {
         return fileChooser.showOpenMultipleDialog(null);
     }
 
-    // Course class to represent data
-    public static class Course {
-        private final ObjectProperty<Color> color;
-        private final String number;
-        private final String name;
-        private final ObservableList<File> files;
-
-        public Course(Color color, String number, String name, List<File> files) {
-            this.color = new SimpleObjectProperty<>(color);
-            this.number = number;
-            this.name = name;
-            this.files = FXCollections.observableArrayList(files);
-        }
-
-        public ObjectProperty<Color> colorProperty() {
-            return color;
-        }
-
-        public Color getColor() {
-            return color.get();
-        }
-
-        public void setColor(Color color) {
-            this.color.set(color);
-        }
-
-        public String getNumber() {
-            return number;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public ObservableList<File> getFiles() {
-            return files;
+    private void toggleView() {
+        if (listView.isVisible()) {
+            listView.setVisible(false);
+            tableView.setVisible(true);
+        } else {
+            listView.setVisible(true);
+            tableView.setVisible(false);
         }
     }
+
+
 }
