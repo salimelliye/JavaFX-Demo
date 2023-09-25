@@ -255,6 +255,43 @@ public class MainApp extends Application {
     }
 }
 ```
+
+
+* ## Pagination
+### Import Statements for Pagination
+
+```java
+import javafx.scene.Scene;
+```
+
+### Create a JavaFx application
+public class MainApp extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+         // Create Pagination with 3 pages
+        pagination = new Pagination(3);
+        pagination.setPageFactory(this::createPage);
+        
+        private VBox createPage(int pageIndex) {
+        VBox pageContent = new VBox();
+        pageContent.setSpacing(10);
+
+        if (pageIndex == 0) {
+            // Page 1: ListView
+            pageContent.getChildren().addAll(listView);
+        } else if (pageIndex == 1) {
+            // Page 2: TableView
+            pageContent.getChildren().addAll(tableView);
+        } else if (pageIndex == 2) {
+            // Page 3: HtmlEditor
+            pageContent.getChildren().addAll(htmleditor);
+        }
+
+        return pageContent;
+    }
+}
+
+
 --- 
 
 > Look at you, you've come this far! </br>
